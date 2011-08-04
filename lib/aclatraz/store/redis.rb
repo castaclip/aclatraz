@@ -48,7 +48,7 @@ module Aclatraz
         
         permissions = @backend.smembers(SUSPECT_ROLES_KEY % suspect_id(suspect)).map { |role|
           role = unpack(role)
-          if role.size > 1 && role[0] == for_role
+          if role.size > 1 && role[0] == for_role.to_s # redis returns strings only
             if 3 == role.size
               klass = resolve_class(role[1])
               if (given_klass.nil? || klass == given_klass)
@@ -59,7 +59,7 @@ module Aclatraz
             else
               klass = resolve_class(role[1])
               if (given_klass.nil? || klass == given_klass)
-                 klass # return the class
+                klass # return the class
               else
                 nil
               end
